@@ -50,4 +50,19 @@ public class ServicioDevolucion {
         return null; // Puedes manejar este caso de acuerdo a tus necesidades
     }
 
+    public String deleteDevolucion(long id) {
+        Optional<Devolucion> devolucionOptional = repoDevolucion.findById(id);
+
+        if (devolucionOptional.isPresent()) {
+            Devolucion devolucion = devolucionOptional.get();
+
+            // Elimina sucurslaes relacionadas en cascada
+            repoDevolucion.delete(devolucion);
+
+            return "elementos relacionados eliminados en cascada";
+        } else {
+            return "devolucion no encontrada";
+        }
+    }
+
 }

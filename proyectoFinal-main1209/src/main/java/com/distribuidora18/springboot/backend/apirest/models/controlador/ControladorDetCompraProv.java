@@ -33,9 +33,54 @@ public class ControladorDetCompraProv {
         }
     }
 
+    @GetMapping("/buscarDetalleCompraProveedor/{iddetallecompraproveedor}")
+    public ResponseEntity<?> findByid(@PathVariable long iddetallecompraproveedor){
+        Map<String,Object> response= new HashMap<>();
+        try{
+            return new ResponseEntity<>(serviciodetallecompraproveedor.findById(iddetallecompraproveedor),HttpStatus.OK);
+        }catch (DataAccessException e){
+            response.put("mensaje","Error al Encontrar en la base de datos");
+            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     @PostMapping("/agregarDetalleCompraProveedor/{idproveedor}/{idproducto}")
     public ResponseEntity<Void> insertarDetalleCompraProveedor(@PathVariable Long idproveedor, @PathVariable Long idproducto, @RequestBody DetalleCompraProveedor detallecompraproveedor) {
         serviciodetallecompraproveedor.addDetCompra(idproveedor, idproducto, detallecompraproveedor);
         return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PutMapping("/actualizarPedido/{iddetallecompraproveedor}")
+    public ResponseEntity<?> actualizarDetalleCompraProveedor(@PathVariable Long iddetallecompraproveedor, @RequestBody DetalleCompraProveedor detallecompraproveedorActualizado) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            DetalleCompraProveedor detallecompraproveedor = serviciodetallecompraproveedor.actualizarDetalleCompraProveedor(iddetallecompraproveedor, detallecompraproveedorActualizado);
+            if (detallecompraproveedor != null) {
+                return new ResponseEntity<>(detallecompraproveedor, HttpStatus.OK);
+            } else {
+                response.put("mensaje", "Pedido no encontrado");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al actualizar en la base de datos");
+            response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("borrardetallecompravendedor/{iddetallecompravendedor}")
+    public  ResponseEntity<?> borrarDetalleCompraProveedor(Long iddetallecompravendedor){
+        Map<String,Object> response= new HashMap<>();
+        try {
+            return new ResponseEntity<>(serviciodetallecompraproveedor.deleteDetalleCompraProveedor(iddetallecompravendedor),HttpStatus.OK);
+
+        }catch (DataAccessException e){
+            response.put("mensaje","Error al borrar en  la base de datos");
+            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
     }
 }

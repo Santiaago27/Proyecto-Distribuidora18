@@ -20,6 +20,7 @@ public class DetallePedido {
     private long descuento;
 
     private long cantidad;
+    private long total;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pedido",referencedColumnName = "id_pedido",nullable = false)
     @JsonIgnore
@@ -36,12 +37,13 @@ public class DetallePedido {
     public DetallePedido() {
     }
 
-    public DetallePedido(long id_detalle_pedido, long precio, long subTotal, long descuento, long cantidad, Pedido id_pedido, Producto id_producto, Set<Devolucion> devoluciones) {
+    public DetallePedido(long id_detalle_pedido, long precio, long subTotal, long descuento, long cantidad, long total, Pedido id_pedido, Producto id_producto, Set<Devolucion> devoluciones) {
         this.id_detalle_pedido = id_detalle_pedido;
         this.precio = precio;
         this.subTotal = subTotal;
         this.descuento = descuento;
         this.cantidad = cantidad;
+        this.total = total;
         this.id_pedido = id_pedido;
         this.id_producto = id_producto;
         this.devoluciones = devoluciones;
@@ -85,6 +87,14 @@ public class DetallePedido {
 
     public void setCantidad(long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
     }
 
     public Pedido getId_pedido() {

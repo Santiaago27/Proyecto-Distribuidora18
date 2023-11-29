@@ -25,8 +25,12 @@ public class ServicioPedido {
     // Listar a todas los Pedidos.
     public List<Pedido> allPedido(){return repoPedido.findAll();}
 
-    //Agregar Sucursal
-    //Borrar el String y dejarlo void .
+    public Optional<Pedido> findById(Long id) {
+        return repoPedido.findById(id);
+    }
+
+
+    //Agregar Pedido
 
     public void addPedido(long id_vendedor,long id_sucursal, Pedido pedido){
         Optional<Vendedor> vendedorOptional = repovendedor.findById(id_vendedor);
@@ -38,23 +42,24 @@ public class ServicioPedido {
             pedido.setId_sucursal(sucursal);
             repoPedido.save(pedido);
         }
-
     }
 
-    public Pedido updatePedido(long id, Pedido pedidoActualizado) {
+    public Pedido actualizarPedido(Long id, Pedido pedidoActualizado) {
         Optional<Pedido> pedidoOptional = repoPedido.findById(id);
 
         if (pedidoOptional.isPresent()) {
             Pedido pedidoExistente = pedidoOptional.get();
+            // Actualiza los campos del pedido existente con los valores del pedido actualizado
             pedidoExistente.setFecha(pedidoActualizado.getFecha());
             pedidoExistente.setFormaPago(pedidoActualizado.getFormaPago());
             pedidoExistente.setPagado(pedidoActualizado.getPagado());
 
-
-            // Actualiza la relación con la categoría si es necesario
+            // Actualiza las relaciones con vendedor y sucursal si es necesario
+            if (pedidoActualizado.getId_vendedor() != null) {
+                pedidoExistente.setId_vendedor(pedidoActualizado.getId_vendedor());
+            }
             if (pedidoActualizado.getId_sucursal() != null) {
-                Sucursal sucursal = reposucursal.findById(pedidoActualizado.getId_sucursal().getId_sucursal()).orElse(null);
-                pedidoExistente.setId_sucursal(sucursal);
+                pedidoExistente.setId_sucursal(pedidoActualizado.getId_sucursal());
             }
 
             return repoPedido.save(pedidoExistente);
@@ -62,10 +67,18 @@ public class ServicioPedido {
 
         return null; // Puedes manejar este caso de acuerdo a tus necesidades
     }
-    //Borrar Sucursal
 
-    public String deletePedido (Long id){
-        repoPedido.deleteById(id);
-        return "Sucursal de id "+id+"Eliminado";
+
+    //Borrar Pedido
+
+    public String deletePedido(Long id) {
+        Optional<Pedido> pedidoOptional = repoPedido.findById(id);
+
+        if (pedidoOptional.isPresent()) {
+            repoPedido.deleteById(id);
+            return "Pedido y registros relacionados eliminados en cascada";
+        } else {
+            return "Pedido no encontrado";
+        }
     }
 }

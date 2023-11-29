@@ -37,6 +37,19 @@ public class ControladorSucursal {
 
     }
 
+    @GetMapping("/buscarSucursal/{idsucursal}")
+    public ResponseEntity<?> findByid(@PathVariable long idsucursal){
+        Map<String,Object> response= new HashMap<>();
+        try{
+            return new ResponseEntity<>(servicioSucursal.findById(idsucursal),HttpStatus.OK);
+        }catch (DataAccessException e){
+            response.put("mensaje","Error al Encontrar en la base de datos");
+            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     @PutMapping("/actualizarSucursal/{id}")
     public ResponseEntity<?> actualizarSucursal(@PathVariable Long id, @RequestBody Sucursal sucursalActualizada) {
         Map<String, Object> response = new HashMap<>();
@@ -56,8 +69,7 @@ public class ControladorSucursal {
     }
 
 
-    @DeleteMapping("borrarsucursal/" +
-            "{id}")
+    @DeleteMapping("borrarsucursal/" + "{id}")
     public  ResponseEntity<?> borrarSucursal(Long id){
         Map<String,Object> response= new HashMap<>();
         try {

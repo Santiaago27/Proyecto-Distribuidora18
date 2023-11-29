@@ -22,9 +22,13 @@ public class ServicioDetallePedido {
     // Listar a todas los Pedidos.
     public List<DetallePedido> allDetallePedido(){return repoDetallePedido.findAll();}
 
-    //Agregar Sucursal
-    //Borrar el String y dejarlo void .
+    //buscar por ID
+    public Optional<DetallePedido> findById(Long id) {
 
+        return repoDetallePedido.findById(id);
+    }
+
+    //Agregar Pedido
     public void addDetallePedido(long id_producto,long id_pedido, DetallePedido detallepedido){
         Optional<Pedido> pedidoOptional = repopedido.findById(id_pedido);
         Optional<Producto> productoOptional = repoproducto.findById(id_producto);
@@ -38,14 +42,50 @@ public class ServicioDetallePedido {
         }
 
     }
+
+    public DetallePedido actualizarDetallePedido(Long id, DetallePedido detallepedidoActualizado) {
+        Optional<DetallePedido> detallepedidoOptional = repoDetallePedido.findById(id);
+
+        if (detallepedidoOptional.isPresent()) {
+            DetallePedido detallepedidoExistente = detallepedidoOptional.get();
+            // Actualiza los campos del detalle existente con los valores del detalle actualizado
+
+            detallepedidoExistente.setCantidad(detallepedidoActualizado.getCantidad());
+            detallepedidoExistente.setDescuento(detallepedidoActualizado.getDescuento());
+            detallepedidoExistente.setPrecio(detallepedidoActualizado.getPrecio());
+            detallepedidoExistente.setSubTotal(detallepedidoActualizado.getSubTotal());
+            detallepedidoExistente.setTotal(detallepedidoActualizado.getTotal());
+
+
+            // Actualiza las relaciones con producto y proveedor si es necesario
+            if (detallepedidoActualizado.getId_producto() != null) {
+                detallepedidoExistente.setId_producto(detallepedidoActualizado.getId_producto());
+            }
+            if (detallepedidoActualizado.getId_pedido() != null) {
+                detallepedidoExistente.setId_pedido(detallepedidoActualizado.getId_pedido());
+            }
+
+            return repoDetallePedido.save(detallepedidoExistente);
+        }
+
+        return null;
+    }
+
+
+
     //Borrar Sucursal
+    public String deleteDetallePedido(long id) {
+        Optional<DetallePedido> detallepedidoOptional = repoDetallePedido.findById(id);
 
+        if (detallepedidoOptional.isPresent()) {
+            DetallePedido detallepedido = detallepedidoOptional.get();
 
+            // Elimina la categoría y los productos relacionados en cascada
+            repoDetallePedido.delete(detallepedido);
 
-    public String deleteDetallePedido (Long id){
-
-        repoDetallePedido.deleteById(id);
-
-        return "Sucursal de id "+id+"Eliminado";
+            return "detallepedido relacionados eliminados en cascada";
+        } else {
+            return "detallepedido no encontrado";
+        }
     }
 }
