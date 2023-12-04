@@ -12,15 +12,18 @@ public class ServicioDetallePedido {
     private RepoDetallePedido repoDetallePedido;
     private RepoPedido repopedido;
     private RepoProducto repoproducto;
-    public ServicioDetallePedido (RepoPedido repoPedido, RepoProducto repoProducto, RepoDetallePedido repoDetallePedido){
-        this.repopedido=repoPedido;
+
+    public ServicioDetallePedido(RepoPedido repoPedido, RepoProducto repoProducto, RepoDetallePedido repoDetallePedido) {
+        this.repopedido = repoPedido;
         this.repoproducto = repoProducto;
         this.repoDetallePedido = repoDetallePedido;
 
     }
 
     // Listar a todas los Pedidos.
-    public List<DetallePedido> allDetallePedido(){return repoDetallePedido.findAll();}
+    public List<DetallePedido> allDetallePedido() {
+        return repoDetallePedido.findAll();
+    }
 
     //buscar por ID
     public Optional<DetallePedido> findById(Long id) {
@@ -29,7 +32,7 @@ public class ServicioDetallePedido {
     }
 
     //Agregar Pedido
-    public void addDetallePedido(long id_producto,long id_pedido, DetallePedido detallepedido){
+    public void addDetallePedido(long id_producto, long id_pedido, DetallePedido detallepedido) {
         Optional<Pedido> pedidoOptional = repopedido.findById(id_pedido);
         Optional<Producto> productoOptional = repoproducto.findById(id_producto);
         if ((pedidoOptional.isPresent()) && (productoOptional.isPresent())) {
@@ -57,7 +60,6 @@ public class ServicioDetallePedido {
             detallepedidoExistente.setTotal(detallepedidoActualizado.getTotal());
 
 
-            // Actualiza las relaciones con producto y proveedor si es necesario
             if (detallepedidoActualizado.getId_producto() != null) {
                 detallepedidoExistente.setId_producto(detallepedidoActualizado.getId_producto());
             }
@@ -72,15 +74,13 @@ public class ServicioDetallePedido {
     }
 
 
-
-    //Borrar Sucursal
     public String deleteDetallePedido(long id) {
         Optional<DetallePedido> detallepedidoOptional = repoDetallePedido.findById(id);
 
         if (detallepedidoOptional.isPresent()) {
             DetallePedido detallepedido = detallepedidoOptional.get();
 
-            // Elimina la categoría y los productos relacionados en cascada
+
             repoDetallePedido.delete(detallepedido);
 
             return "detallepedido relacionados eliminados en cascada";

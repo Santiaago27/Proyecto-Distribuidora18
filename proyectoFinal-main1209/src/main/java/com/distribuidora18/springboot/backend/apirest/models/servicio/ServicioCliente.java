@@ -25,6 +25,7 @@ public class ServicioCliente {
 
     public Optional<Cliente> findById(Long id) {
 
+
         return repoCliente.findById(id);
     }
 
@@ -68,7 +69,7 @@ public class ServicioCliente {
         if (clienteOptional.isPresent()) {
             Cliente cliente = clienteOptional.get();
 
-            // Elimina la clientes y sucurslaes relacionados en cascada
+            // Elimina la categoría y los productos relacionados en cascada
             repoCliente.delete(cliente);
 
             return "elementos relacionados eliminados en cascada";
@@ -76,5 +77,7 @@ public class ServicioCliente {
             return "cliente no encontrado";
         }
     }
+
+
 
 }

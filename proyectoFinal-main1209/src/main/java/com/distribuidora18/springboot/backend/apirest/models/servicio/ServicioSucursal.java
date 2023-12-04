@@ -22,10 +22,7 @@ public class ServicioSucursal {
     public List<Sucursal> allSucursales(){
         return repoSucursal.findAll();}
 
-    public Optional<Sucursal> findById(Long id) {
-
-        return repoSucursal.findById(id);
-    }
+    //Agregar Sucursal
     //Borrar el String y dejarlo void
 
      public void addSucursal(long id_cliente, Sucursal sucursal){
@@ -64,19 +61,9 @@ public class ServicioSucursal {
     }
      //Borrar Sucursal
 
-    public String deleteSucursal(long id) {
-        Optional<Sucursal> sucursalOptional = repoSucursal.findById(id);
-
-        if (sucursalOptional.isPresent()) {
-            Sucursal sucursal = sucursalOptional.get();
-
-            // Elimina sucurslaes relacionadas en cascada
-            repoSucursal.delete(sucursal);
-
-            return "elementos relacionados eliminados en cascada";
-        } else {
-            return "sucursal no encontrada";
-        }
+    public String deleteSucursal (Long id){
+        repoSucursal.deleteById(id);
+        return "Sucursal de id "+id+"Eliminado";
     }
 
 

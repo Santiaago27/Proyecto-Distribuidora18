@@ -2,7 +2,6 @@ package com.distribuidora18.springboot.backend.apirest.models.servicio;
 
 import com.distribuidora18.springboot.backend.apirest.models.entity.CategoriaProducto;
 import com.distribuidora18.springboot.backend.apirest.models.entity.Producto;
-import com.distribuidora18.springboot.backend.apirest.models.entity.Sucursal;
 import com.distribuidora18.springboot.backend.apirest.models.repository.RepoCategoriaProducto;
 import com.distribuidora18.springboot.backend.apirest.models.repository.RepoProducto;
 import org.springframework.stereotype.Service;
@@ -64,18 +63,8 @@ public class ServicioProducto {
 
     //Borrar Sucursal
 
-    public String deleteProducto(long id) {
-        Optional<Producto> productoOptional = repoProducto.findById(id);
-
-        if (productoOptional.isPresent()) {
-            Producto producto = productoOptional.get();
-
-            // Elimina sucurslaes relacionadas en cascada
-            repoProducto.delete(producto);
-
-            return "elementos relacionados eliminados en cascada";
-        } else {
-            return "producto no encontrado";
-        }
+    public String deleteProducto (Long id){
+        repoProducto.deleteById(id);
+        return "Sucursal de id "+id+"Eliminado";
     }
 }

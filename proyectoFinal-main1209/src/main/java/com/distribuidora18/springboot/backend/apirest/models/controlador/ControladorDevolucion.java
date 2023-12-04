@@ -56,18 +56,5 @@ public class ControladorDevolucion {
         }
     }
 
-    @DeleteMapping("borrarsdevolucion/" + "{id}")
-    public  ResponseEntity<?> borrarDevolucion(Long id){
-        Map<String,Object> response= new HashMap<>();
-        try {
-            return new ResponseEntity<>(servicioDevolucion.deleteDevolucion(id),HttpStatus.OK);
-
-        }catch (DataAccessException e){
-            response.put("mensaje","Error al borrar en  la base de datos");
-            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-
-    }
 
 }

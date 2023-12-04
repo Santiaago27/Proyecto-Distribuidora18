@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin (origins = "*", allowedHeaders = {"GET","POST","PUT","DELETE"})
+@CrossOrigin (origins = "*")
 public class ControladorCliente {
 
     private ServicioCliente servicioCliente;

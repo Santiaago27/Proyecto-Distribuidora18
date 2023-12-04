@@ -1,7 +1,9 @@
 package com.distribuidora18.springboot.backend.apirest.models.controlador;
 
 import com.distribuidora18.springboot.backend.apirest.models.entity.DetallePedido;
+import com.distribuidora18.springboot.backend.apirest.models.entity.Pedido;
 import com.distribuidora18.springboot.backend.apirest.models.servicio.ServicioDetallePedido;
+import com.distribuidora18.springboot.backend.apirest.models.servicio.ServicioPedido;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

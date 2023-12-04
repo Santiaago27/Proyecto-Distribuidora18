@@ -21,10 +21,6 @@ public class ServicioDetalleCompraProveedor {
 
     public List<DetalleCompraProveedor> allDetCompra(){return repoDetalleCompraProveedor.findAll();}
 
-    public Optional<DetalleCompraProveedor> findById(Long id) {
-        return repoDetalleCompraProveedor.findById(id);
-    }
-
     public void addDetCompra(long id_proveedor,long id_producto, DetalleCompraProveedor detallecompraproveedor){
         Optional<Proveedor> proveedorOptional = repoproveedor.findById(id_proveedor);
         Optional<Producto> productoOptional = repoproducto.findById(id_producto);
@@ -36,41 +32,6 @@ public class ServicioDetalleCompraProveedor {
             repoDetalleCompraProveedor.save(detallecompraproveedor);
         }
 
-    }
-
-    public DetalleCompraProveedor actualizarDetalleCompraProveedor(Long id, DetalleCompraProveedor detallecompraproveedorActualizado) {
-        Optional<DetalleCompraProveedor> detallecompraproveedorOptional = repoDetalleCompraProveedor.findById(id);
-
-        if (detallecompraproveedorOptional.isPresent()) {
-            DetalleCompraProveedor detallecompraproveedorExistente = detallecompraproveedorOptional.get();
-            // Actualiza los campos del detalle existente con los valores del detalle actualizado
-            detallecompraproveedorExistente.setFecha(detallecompraproveedorActualizado.getFecha());
-            detallecompraproveedorExistente.setCantidad(detallecompraproveedorActualizado.getCantidad());
-            detallecompraproveedorExistente.setPrecio(detallecompraproveedorActualizado.getPrecio());
-
-            // Actualiza las relaciones con producto y proveedor si es necesario
-            if (detallecompraproveedorActualizado.getId_producto() != null) {
-                detallecompraproveedorExistente.setId_producto(detallecompraproveedorActualizado.getId_producto());
-            }
-            if (detallecompraproveedorActualizado.getId_proveedor() != null) {
-                detallecompraproveedorExistente.setId_proveedor(detallecompraproveedorActualizado.getId_proveedor());
-            }
-
-            return repoDetalleCompraProveedor.save(detallecompraproveedorExistente);
-        }
-
-        return null;
-    }
-
-    public String deleteDetalleCompraProveedor(Long id) {
-        Optional<DetalleCompraProveedor> detallecompraproveedorOptional = repoDetalleCompraProveedor.findById(id);
-
-        if (detallecompraproveedorOptional.isPresent()) {
-            repoDetalleCompraProveedor.deleteById(id);
-            return "elementos relacionados eliminados en cascada";
-        } else {
-            return "DetalleCompraProveedor no encontrado";
-        }
     }
 
 }
